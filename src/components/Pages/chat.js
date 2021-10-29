@@ -2,6 +2,9 @@ import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import React, { useEffect, useState } from "react";
 import {Box} from '@mui/material';
 import TalkList from "./chat-components/talkList";
+import TalkInput from "./chat-components/talkInput";
+import MessageList from "./chat-components/messageList";
+import { CHAT_PANE, CHAT_PANE_MAIN, CONVERSATION_PANE, MESSAGE_TEXT_COLOR } from "./colors";
 function Chat(){
   const [connection, setConnection] = useState(HubConnection>(null));
   const [inputText, setInputText] = useState("");
@@ -78,20 +81,22 @@ const EstablishConnection = () => {
     //     }}
     //   />
     // </>
-    <Box sx={{ display: 'grid', gridTemplateRows: '1fr 10fr 1fr',height:'100vh', gap: 1, }}>
+    <Box sx={{ display: 'grid', gridTemplateRows: '1fr 10fr 1fr',height:'100vh', gap: 1,}}>
       <Box>header</Box>
       <Box sx={{ display: 'grid', gap : 1.5  ,gridTemplateColumns: '0.6fr 3fr 10fr 1fr', }}>
         <Box>Tools</Box>
-        <Box>
+        <Box padding={2} sx={{ backgroundColor : `${CONVERSATION_PANE}`}}>
           <TalkList/>
         </Box>
-        <Box sx={{ display: 'grid', gridTemplateRows: '1fr 10fr 1fr',height:'100%' }}>
-          <Box>Title</Box>
-          <Box sx={{ display: 'grid', gridTemplateColumns: '5fr 1fr',height:'100%' }}>
-            <Box>Messages</Box>
-            <Box>Detail</Box>
+        <Box sx={{ display: 'grid', gridTemplateRows: '1fr 10fr 1fr',height:'100%', gap : 1, backgroundColor : `${CHAT_PANE}`, color: `${MESSAGE_TEXT_COLOR}` }}>
+          <Box sx={{backgroundColor : `${CHAT_PANE_MAIN}`}} >Title</Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: '5fr 1.8fr',height:'100%',gap: 1, }}>
+            <Box padding={2} sx={{backgroundColor : `${CHAT_PANE_MAIN}`}}>
+              <MessageList/>
+            </Box >
+            <Box sx={{backgroundColor : `${CHAT_PANE_MAIN}`}}>Detail</Box>
           </Box>
-          <Box>input - send</Box>
+          <Box sx={{backgroundColor : `${CHAT_PANE_MAIN}`}}><TalkInput /></Box>
         </Box>
         <Box>Detail Tools</Box>
       </Box>

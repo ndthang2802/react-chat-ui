@@ -1,4 +1,4 @@
-import { Divider, List } from '@mui/material'
+import { Divider, List, Stack } from '@mui/material'
 import React from 'react'
 import TalkListItem from './talkListItem'
 export default function TalkList() {
@@ -19,16 +19,29 @@ export default function TalkList() {
         }
     ]
     return (
-    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    // <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    //     {
+    //         talks.map((talk,index) => {
+    //             return (<React.Fragment>
+    //                 <TalkListItem key={index} name={talk.name} user={talk.user} message={talk.message} />
+    //                 <Divider variant="inset" component="li" />
+    //             </React.Fragment>)
+    //         })
+    //     }
+       
+    // </List>
+    <Stack
+        divider={<Divider orientation="horizonal" flexItem />}
+        spacing={2}
+        >
         {
             talks.map((talk,index) => {
                 return (<React.Fragment>
                     <TalkListItem key={index} name={talk.name} user={talk.user} message={talk.message} />
-                    <Divider variant="inset" component="li" />
+                    
                 </React.Fragment>)
             })
         }
-       
-    </List>
+    </Stack>
     )
 }
