@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import React from 'react';
 import { createTheme } from '@mui/material/styles';
 import { teal } from '@mui/material/colors';
-import { MESSAGE_THEME_COLOR } from '../colors';
+import { MESSAGE_THEME_COLOR } from '../../colors';
 
 const theme = createTheme({
   palette: {

@@ -4,7 +4,7 @@ import {Box} from '@mui/material';
 import TalkList from "./chat-components/talkList";
 import TalkInput from "./chat-components/talkInput";
 import MessageList from "./chat-components/messageList";
-import { CHAT_PANE, CHAT_PANE_MAIN, CONVERSATION_PANE, MESSAGE_TEXT_COLOR } from "./colors";
+import { CHAT_PANE, CHAT_PANE_MAIN, CONVERSATION_PANE, MESSAGE_TEXT_COLOR } from "../colors";
 function Chat(){
   const [connection, setConnection] = useState(HubConnection>(null));
   const [inputText, setInputText] = useState("");
@@ -81,10 +81,7 @@ const EstablishConnection = () => {
     //     }}
     //   />
     // </>
-    <Box sx={{ display: 'grid', gridTemplateRows: '1fr 10fr 1fr',height:'100vh', gap: 1,}}>
-      <Box>header</Box>
-      <Box sx={{ display: 'grid', gap : 1.5  ,gridTemplateColumns: '0.6fr 3fr 10fr 1fr', }}>
-        <Box>Tools</Box>
+      <Box sx ={{display: 'grid', gap : 1.5  ,gridTemplateColumns: '3fr 10fr'}}>
         <Box padding={2} sx={{ backgroundColor : `${CONVERSATION_PANE}`}}>
           <TalkList/>
         </Box>
@@ -98,11 +95,8 @@ const EstablishConnection = () => {
           </Box>
           <Box sx={{backgroundColor : `${CHAT_PANE_MAIN}`}}><TalkInput /></Box>
         </Box>
-        <Box>Detail Tools</Box>
       </Box>
-      <Box>footer</Box>
-    
-    </Box>
+        
   );
 };
 

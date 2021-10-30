@@ -4,7 +4,7 @@ import KeyboardAltOutlinedIcon from '@mui/icons-material/KeyboardAltOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import React from 'react'
 import { Box } from '@mui/system';
-import { DEFAULT_ICON_COLOR, MESSAGE_TEXT_COLOR } from '../colors';
+import { DEFAULT_ICON_COLOR, MESSAGE_TEXT_COLOR } from '../../colors';
 import { AccountCircle } from '@mui/icons-material';
 
 
