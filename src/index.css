@@ -14,9 +14,9 @@ code {
 }
 
 .icon-default {
-  fill: #ecedee;
-  height: 3.5rem;
-  width: 3.5rem;
+  fill: #ecedee!important;
+  height: 3.5rem!important;
+  width: 3.5rem!important;
 }
 
 /* .icon-default-hover {

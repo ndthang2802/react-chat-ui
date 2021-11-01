@@ -5,11 +5,47 @@ import TalkList from "./chat-components/talkList";
 import TalkInput from "./chat-components/talkInput";
 import MessageList from "./chat-components/messageList";
 import { CHAT_PANE, CHAT_PANE_MAIN, CONVERSATION_PANE, MESSAGE_TEXT_COLOR } from "../colors";
+import { makeStyles } from '@mui/styles';
+import CreateTalk from "./chat-components/createTalk";
+
+const useStyles = makeStyles({
+  root : {
+    display: 'grid', 
+    gap : '.9rem'  ,
+    gridTemplateColumns: '3fr 10fr'
+  },
+  conversation_list : {
+    backgroundColor : CONVERSATION_PANE,
+    display : 'grid',
+    gridTemplateRows : '1fr auto', 
+  },
+  chat_pane_background : {
+    backgroundColor : CHAT_PANE_MAIN
+  },
+  chat_board : {
+    display: 'grid', 
+    gridTemplateRows: '1fr 10fr 1fr',
+    height:'100%', 
+    gap : '.6rem', 
+    backgroundColor : CHAT_PANE, 
+    color: MESSAGE_TEXT_COLOR
+  },
+  message_board : {
+    display: 'grid', 
+    gridTemplateColumns: '5fr 1.8fr',
+    height:'100%',
+    gap: '.6rem',
+  }
+
+})
 function Chat(){
+
+  const classes = useStyles();
   const [connection, setConnection] = useState(HubConnection>(null));
   const [inputText, setInputText] = useState("");
 
   const [groupName, setGroupName] = useState("");
+
 
 
 //   useEffect(() => {
@@ -81,19 +117,20 @@ const EstablishConnection = () => {
     //     }}
     //   />
     // </>
-      <Box sx ={{display: 'grid', gap : 1.5  ,gridTemplateColumns: '3fr 10fr'}}>
-        <Box padding={2} sx={{ backgroundColor : `${CONVERSATION_PANE}`}}>
+      <Box className = {classes.root}>
+        <Box padding={2} className = {classes.conversation_list}>
           <TalkList/>
+          <CreateTalk />
         </Box>
-        <Box sx={{ display: 'grid', gridTemplateRows: '1fr 10fr 1fr',height:'100%', gap : 1, backgroundColor : `${CHAT_PANE}`, color: `${MESSAGE_TEXT_COLOR}` }}>
-          <Box sx={{backgroundColor : `${CHAT_PANE_MAIN}`}} >Title</Box>
-          <Box sx={{ display: 'grid', gridTemplateColumns: '5fr 1.8fr',height:'100%',gap: 1, }}>
-            <Box padding={2} sx={{backgroundColor : `${CHAT_PANE_MAIN}`}}>
+        <Box className = {classes.chat_board}>
+          <Box className = {classes.chat_pane_background} >Title</Box>
+          <Box className={classes.message_board}>
+            <Box padding={2} className = {classes.chat_pane_background}>
               <MessageList/>
             </Box >
-            <Box sx={{backgroundColor : `${CHAT_PANE_MAIN}`}}>Detail</Box>
+            <Box className = {classes.chat_pane_background}>Detail</Box>
           </Box>
-          <Box sx={{backgroundColor : `${CHAT_PANE_MAIN}`}}><TalkInput /></Box>
+          <Box className = {classes.chat_pane_background}><TalkInput /></Box>
         </Box>
       </Box>
         

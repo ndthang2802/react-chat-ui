@@ -6,14 +6,17 @@ import LeftSideToolbar from "./components/side/leftside";
 function App() {
 
   const [Token, setToken] = useState('');
+  const [IsLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
     if(localStorage.getItem('Token') !== 'undefined'){
       setToken(localStorage.getItem('Token'))
     }
-  }, [])
-  if (!Token) {
-    return <Login />
+  }, [IsLogin])
+
+
+  if (!IsLogin) {
+    return <Login  loginState = {setIsLogin} />
   }
   else {
     return (

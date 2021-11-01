@@ -1,5 +1,6 @@
 export const APP_THEME = "#172332";
 export const DEFAULT_ICON_COLOR = '#ecedee';
+export const DEFAULT_TEXT_COLOR = '#ecedee';
 
 
 

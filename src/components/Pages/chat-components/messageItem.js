@@ -6,17 +6,6 @@ import { createTheme } from '@mui/material/styles';
 import { teal } from '@mui/material/colors';
 import { MESSAGE_THEME_COLOR } from '../../colors';
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: teal[200],
-    },
-    secondary: {
-      main: '#f44336',
-    },
-  },
-});
-
 export default function MessageItem(props) {
     const {user,message,align} = props;
     

@@ -41,23 +41,28 @@ const useStyles = makeStyles({
   footer: {
     display:"flex",
     justifyContent : 'flex-end',
+  },
+  icon : {
+    fill: '#ecedee!important',
+    height: '3.2rem!important',
+    width: '3.2rem!important',
   }
 })
 
-function Login() {
+function Login(props) {
 
+    const {loginState} = props;
     const classes = useStyles()
-
     const [Username, setUsername] = useState('');
     const [Password, setPassword] = useState('');
-
-    const [Mode, setMode] = useState('login')
+    const [Mode, setMode] = useState('login');
 
 
     const handleLogin = () => {
       const data = {'username': Username,'password': Password};
       try {
         Authentication.login(data);
+        loginState(true);
       }
       catch (e) {
         console.log(e);
@@ -67,8 +72,8 @@ function Login() {
   return (
     <Box className={classes.root}>
       <Box className={classes.header}>
-        <Box>{Mode === 'login' ? <LoginIcon className='icon_default' /> : <CreateIcon  className='icon_default' />}</Box>
-        <Box>{Mode === 'login' ? <Typography variant='h6'>Login</Typography> : <Typography variant='h6'>Register</Typography>}</Box>
+        <Box>{Mode === 'login' ? <LoginIcon className={classes.icon} /> : <CreateIcon  className={classes.icon} />}</Box>
+        <Box>{Mode === 'login' ? <Typography variant='h4'>Login</Typography> : <Typography variant='h6'>Register</Typography>}</Box>
       </Box>
       <Box className={classes.main} pl={3} mt={2}>
         <Box>
