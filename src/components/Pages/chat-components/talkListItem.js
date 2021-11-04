@@ -32,7 +32,7 @@ const useStyles = makeStyles({
 });
 
 export default function TalkListItem(props) {
-    const {name,user,message, ischoose, choose} = props;
+    const {id,name,creator,users, ischoose, choose} = props;
     const classes = useStyles(ischoose);
     return (
       <Box className = {classes.root} onClick = {choose}  >
@@ -42,8 +42,8 @@ export default function TalkListItem(props) {
             <Box><Typography variant='h6' className={classes.groupName}>{name}</Typography></Box>
         </Box>
         <Box mt={2}>
-          <Typography style= {{color : `${CONVERSATION_LAST_USER_TEXT_NAME}`,display: 'inline-block' }} >{user+':'}&nbsp;&nbsp;</Typography>
-          <Typography style= {{color : `${CONVERSATION_LAST_USER_TEXT_UNREAD}`,display: 'inline-block'}} >{message}</Typography></Box>
+          <Typography style= {{color : `${CONVERSATION_LAST_USER_TEXT_NAME}`,display: 'inline-block' }} >{'Conversation is not saved'}&nbsp;&nbsp;</Typography>
+          <Typography style= {{color : `${CONVERSATION_LAST_USER_TEXT_UNREAD}`,display: 'inline-block'}} >{'!!!!'}</Typography></Box>
       </Box>
     )
 }

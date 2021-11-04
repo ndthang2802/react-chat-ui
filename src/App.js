@@ -9,8 +9,8 @@ function App() {
   const [IsLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
-    if(localStorage.getItem('Token') !== 'undefined'){
-      setToken(localStorage.getItem('Token'))
+    if(localStorage.getItem('Token') !== 'undefined' && localStorage.getItem('Token') !== null){
+      setIsLogin(true);
     }
   }, [IsLogin])
 

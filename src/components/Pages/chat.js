@@ -7,6 +7,7 @@ import MessageList from "./chat-components/messageList";
 import { CHAT_PANE, CHAT_PANE_MAIN, CONVERSATION_PANE, MESSAGE_TEXT_COLOR } from "../colors";
 import { makeStyles } from '@mui/styles';
 import CreateTalk from "./chat-components/createTalk";
+import conversation from "../../services/API/conversation";
 
 const useStyles = makeStyles({
   root : {
@@ -43,19 +44,14 @@ function Chat(){
   const classes = useStyles();
   const [connection, setConnection] = useState(HubConnection>(null));
   const [inputText, setInputText] = useState("");
-
   const [groupName, setGroupName] = useState("");
+  const [ConversationList, setConversationList] = useState("");
 
 
-
-//   useEffect(() => {
-//     const connect = new HubConnectionBuilder()
-//       .withUrl("https://localhost:5001/chatHub")
-//       .withAutomaticReconnect()
-//       .build();
-
-//     setConnection(connect);
-//   }, []);
+  useEffect(async ()  => {
+    var res = await conversation.get();
+    setConversationList(res);
+  }, []);
 
 const EstablishConnection = () => {
 
@@ -92,7 +88,7 @@ const EstablishConnection = () => {
     if (connection) await connection.invoke("AddToGroup", groupName);
     setGroupName("");
   };
-  console.log(connection);
+  console.log(ConversationList);
   return (
     // <>
     // <button onClick={EstablishConnection} type="primary">
@@ -119,7 +115,7 @@ const EstablishConnection = () => {
     // </>
       <Box className = {classes.root}>
         <Box padding={2} className = {classes.conversation_list}>
-          <TalkList/>
+          <TalkList list = {ConversationList} />
           <CreateTalk />
         </Box>
         <Box className = {classes.chat_board}>
