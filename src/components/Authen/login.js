@@ -58,11 +58,14 @@ function Login(props) {
     const [Mode, setMode] = useState('login');
 
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
       const data = {'username': Username,'password': Password};
       try {
-        Authentication.login(data);
-        loginState(true);
+        await Authentication.login(data);
+        if(localStorage.getItem('Token') !== 'undefined' && localStorage.getItem('Token') !== null){
+          loginState(true);
+        }
+        //loginState(true);
       }
       catch (e) {
         console.log(e);

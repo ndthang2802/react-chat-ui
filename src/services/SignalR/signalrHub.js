@@ -1,3 +1,5 @@
+import { HubConnectionBuilder } from "@microsoft/signalr";
+
 class Hub {
     EstablishConnection = () => {
 

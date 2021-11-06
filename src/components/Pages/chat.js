@@ -2,13 +2,12 @@ import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import React, { useEffect, useState } from "react";
 import {Box} from '@mui/material';
 import TalkList from "./chat-components/talkList";
-import TalkInput from "./chat-components/talkInput";
-import MessageList from "./chat-components/messageList";
-import { CHAT_PANE, CHAT_PANE_MAIN, CONVERSATION_PANE, MESSAGE_TEXT_COLOR } from "../colors";
+import { CONVERSATION_PANE } from "../colors";
 import { makeStyles } from '@mui/styles';
 import CreateTalk from "./chat-components/createTalk";
 import conversation from "../../services/API/conversation";
-
+import ChatBoard from "./chat-components/chatBoard";
+import Hub from "../../services/SignalR/signalrHub";
 const useStyles = makeStyles({
   root : {
     display: 'grid', 
@@ -19,23 +18,6 @@ const useStyles = makeStyles({
     backgroundColor : CONVERSATION_PANE,
     display : 'grid',
     gridTemplateRows : '1fr auto', 
-  },
-  chat_pane_background : {
-    backgroundColor : CHAT_PANE_MAIN
-  },
-  chat_board : {
-    display: 'grid', 
-    gridTemplateRows: '1fr 10fr 1fr',
-    height:'100%', 
-    gap : '.6rem', 
-    backgroundColor : CHAT_PANE, 
-    color: MESSAGE_TEXT_COLOR
-  },
-  message_board : {
-    display: 'grid', 
-    gridTemplateColumns: '5fr 1.8fr',
-    height:'100%',
-    gap: '.6rem',
   }
 
 })
@@ -46,21 +28,32 @@ function Chat(){
   const [inputText, setInputText] = useState("");
   const [groupName, setGroupName] = useState("");
   const [ConversationList, setConversationList] = useState("");
+  const [Choose, setChoose] = useState('');
+
 
 
   useEffect(async ()  => {
     var res = await conversation.get();
     setConversationList(res);
+
+    setConnection(Hub.EstablishConnection())
+  
   }, []);
 
-const EstablishConnection = () => {
+  useEffect(async ()  => {
+    if(ConversationList.length){
+      setChoose(ConversationList[0].id);
+    }
+  }, [ConversationList]);
 
-    const connect = new HubConnectionBuilder()
-      .withUrl("https://localhost:5001/chatHub",{accessTokenFactory : ()=>localStorage.getItem('Token') })
-      .build();
+// const EstablishConnection = () => {
 
-    setConnection(connect);
-}
+//     const connect = new HubConnectionBuilder()
+//       .withUrl("https://localhost:5001/chatHub",{accessTokenFactory : ()=>localStorage.getItem('Token') })
+//       .build();
+
+//     setConnection(connect);
+// }
 
   useEffect(() => {
     if (connection) {
@@ -79,15 +72,15 @@ const EstablishConnection = () => {
     }
   }, [connection]);
 
-  const sendMessage = async () => {
-    if (connection) await connection.invoke("SendMessageToGroup", inputText,'group1');
-    setInputText("");
-  };
+  // const sendMessage = async () => {
+  //   if (connection) await connection.invoke("SendMessageToGroup", inputText,'group1');
+  //   setInputText("");
+  // };
 
-  const addToGroup = async () => {
-    if (connection) await connection.invoke("AddToGroup", groupName);
-    setGroupName("");
-  };
+  // const addToGroup = async () => {
+  //   if (connection) await connection.invoke("AddToGroup", groupName);
+  //   setGroupName("");
+  // };
   console.log(ConversationList);
   return (
     // <>
@@ -115,19 +108,10 @@ const EstablishConnection = () => {
     // </>
       <Box className = {classes.root}>
         <Box padding={2} className = {classes.conversation_list}>
-          <TalkList list = {ConversationList} />
+          <TalkList list = {ConversationList} setChoose = {setChoose} isChoosing = {Choose} />
           <CreateTalk />
         </Box>
-        <Box className = {classes.chat_board}>
-          <Box className = {classes.chat_pane_background} >Title</Box>
-          <Box className={classes.message_board}>
-            <Box padding={2} className = {classes.chat_pane_background}>
-              <MessageList/>
-            </Box >
-            <Box className = {classes.chat_pane_background}>Detail</Box>
-          </Box>
-          <Box className = {classes.chat_pane_background}><TalkInput /></Box>
-        </Box>
+        <ChatBoard connection={connection} conversation_id = {Choose} />
       </Box>
         
   );
