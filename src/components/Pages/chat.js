@@ -25,93 +25,73 @@ function Chat(){
 
   const classes = useStyles();
   const [connection, setConnection] = useState(HubConnection>(null));
-  const [inputText, setInputText] = useState("");
-  const [groupName, setGroupName] = useState("");
   const [ConversationList, setConversationList] = useState("");
-  const [Choose, setChoose] = useState('');
+  const [Choose, setChoose] = useState(''); // Which conversation is choosing for rendering in chat board
+  const [Init, setInit] = useState(true);  // Flags for first auto connect to all User's conversation
+  const [Connect, setConnect] = useState(true) // If Connect = true establishing signalR connection 
 
+  const [Talks, setTalks] = useState([]);
 
-
-  useEffect(async ()  => {
-    var res = await conversation.get();
-    setConversationList(res);
-
-    setConnection(Hub.EstablishConnection())
-  
-  }, []);
-
-  useEffect(async ()  => {
-    if(ConversationList.length){
-      setChoose(ConversationList[0].id);
+  useEffect(()  => {
+    async function fetchData() {
+      var res = await conversation.get();
+      setConversationList(res);
     }
-  }, [ConversationList]);
-
-// const EstablishConnection = () => {
-
-//     const connect = new HubConnectionBuilder()
-//       .withUrl("https://localhost:5001/chatHub",{accessTokenFactory : ()=>localStorage.getItem('Token') })
-//       .build();
-
-//     setConnection(connect);
-// }
+    fetchData()
+  }, []);  // Get all user's conversation
 
   useEffect(() => {
-    if (connection) {
+    if (connection) { 
       connection
         .start()
         .then(() => {
+          if(Init){
+            for(var c of ConversationList){
+              Hub.AddToGroup(connection,c.id)
+            }
+            setInit(false)
+          }
+
           connection.on("ReceiveMessage", (message) => {
             console.log("receimessage",message)
           });
           connection.on("send", data => {
-            console.log("group: ",data);
+            var _data = data.split(":");
+            var x = {
+              user: _data[0],
+              message: _data[1]
+            }
+            
+            setTalks((old)=>[...old,x]);
         });
 
         })
         .catch((error) => console.log(error));
     }
+
   }, [connection]);
 
-  // const sendMessage = async () => {
-  //   if (connection) await connection.invoke("SendMessageToGroup", inputText,'group1');
-  //   setInputText("");
-  // };
+  useEffect(()  => {  
+    if(ConversationList.length){
+      setChoose(ConversationList[0].id);
+      if(Connect){
+        const connect = Hub.EstablishConnection()
+        setConnection(connect);
+        setConnect(false); // set to false so that signalR does not establish again
+      }
+    }
+  }, [ConversationList]);
 
-  // const addToGroup = async () => {
-  //   if (connection) await connection.invoke("AddToGroup", groupName);
-  //   setGroupName("");
-  // };
-  console.log(ConversationList);
+
+  
+
   return (
-    // <>
-    // <button onClick={EstablishConnection} type="primary">
-    //     connect
-    //   </button>
-    //   <input
-    //     value={inputText}
-    //     onChange={(input) => {
-    //       setInputText(input.target.value);
-    //     }}
-    //   />
-    //   <button onClick={sendMessage} type="primary">
-    //     Send
-    //   </button>
-    //   <button onClick={addToGroup} type="primary">
-    //     Create group chat
-    //   </button>
-    //   <input
-    //     value={groupName}
-    //     onChange={(input) => {
-    //       setGroupName(input.target.value);
-    //     }}
-    //   />
-    // </>
       <Box className = {classes.root}>
         <Box padding={2} className = {classes.conversation_list}>
           <TalkList list = {ConversationList} setChoose = {setChoose} isChoosing = {Choose} />
           <CreateTalk />
         </Box>
-        <ChatBoard connection={connection} conversation_id = {Choose} />
+        <ChatBoard connection={connection} conversation_id = {Choose} talks={Talks} />
       </Box>
         
   );

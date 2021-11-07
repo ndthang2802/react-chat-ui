@@ -29,12 +29,7 @@ const useStyles = makeStyles({
 export default function ChatBoard(props) {
     const classes = useStyles();
 
-    const {connection,conversation_id} = props;
-
-
-    useEffect(async () => {
-      await Hub.AddToGroup(connection,conversation_id)
-    }, [conversation_id])
+    const {connection,conversation_id,talks} = props;
 
 
     return (
@@ -42,11 +37,11 @@ export default function ChatBoard(props) {
           <Box className = {classes.chat_pane_background} >Title</Box>
           <Box className={classes.message_board}>
             <Box padding={2} className = {classes.chat_pane_background}>
-              <MessageList/>
+              <MessageList talks={talks}/>
             </Box >
             <Box className = {classes.chat_pane_background}>Detail</Box>
           </Box>
-          <Box className = {classes.chat_pane_background}><TalkInput connection = {connection} /></Box>
+          <Box className = {classes.chat_pane_background}><TalkInput connection = {connection} conversation_id = {conversation_id} /></Box>
         </Box>
     )
 }
