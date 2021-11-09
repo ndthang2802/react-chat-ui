@@ -33,6 +33,7 @@ function Chat(){
 
   const  dispatch = useDispatch();
 
+  const {conversationList} = useSelector(state => state.conversation);
   // useEffect(()  => {
     
   // }, []);  // Get all user's conversation

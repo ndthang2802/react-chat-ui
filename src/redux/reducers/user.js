@@ -25,7 +25,10 @@ export const userReducer = (state = initialState, action) => {
         case  'GET_USER_INFO_SUCCESS':
             return {
                 ...state,
-                User : payload
+                User : {
+                    ...state.User,
+                    info : payload
+                }
             }
         case  'REFRESH_TOKEN_SUCCESS':
             return {

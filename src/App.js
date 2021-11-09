@@ -19,6 +19,7 @@ function App() {
   useEffect(() => {
       if(isLoggedIn){
         dispatch(GetUserInfo());
+        dispatch(GetAllConversation());
         
       }
   }, [isLoggedIn])

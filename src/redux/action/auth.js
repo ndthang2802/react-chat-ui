@@ -19,7 +19,7 @@ export function Refresh(action){
         try {
             var response = await AuthenticationService.TokenRefresh();
             dispatch({ type : 'REFRESH_TOKEN_SUCCESS', payload : response });
-            return dispatch(action);
+            dispatch(action());
         }
         catch(e) {
             //dispatch({ type : LOGIN_FAIL, payload : response });
