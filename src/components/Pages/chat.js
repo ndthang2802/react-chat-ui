@@ -5,9 +5,10 @@ import TalkList from "./chat-components/talkList";
 import { CONVERSATION_PANE } from "../colors";
 import { makeStyles } from '@mui/styles';
 import CreateTalk from "./chat-components/createTalk";
-import conversation from "../../services/API/conversation";
 import ChatBoard from "./chat-components/chatBoard";
 import Hub from "../../services/SignalR/signalrHub";
+import { useDispatch,useSelector } from "react-redux";
+
 const useStyles = makeStyles({
   root : {
     display: 'grid', 
@@ -25,20 +26,20 @@ function Chat(){
 
   const classes = useStyles();
   const [connection, setConnection] = useState(HubConnection>(null));
-  const [ConversationList, setConversationList] = useState("");
   const [Choose, setChoose] = useState(''); // Which conversation is choosing for rendering in chat board
   const [Init, setInit] = useState(true);  // Flags for first auto connect to all User's conversation
   const [Connect, setConnect] = useState(true) // If Connect = true establishing signalR connection 
-
   const [Talks, setTalks] = useState([]);
 
-  useEffect(()  => {
-    async function fetchData() {
-      var res = await conversation.get();
-      setConversationList(res);
-    }
-    fetchData()
-  }, []);  // Get all user's conversation
+  const  dispatch = useDispatch();
+
+  const {conversationList} = useSelector(state => state.conversation);
+
+
+  console.log(conversationList);
+  // useEffect(()  => {
+    
+  // }, []);  // Get all user's conversation
 
   useEffect(() => {
     if (connection) { 
@@ -46,8 +47,8 @@ function Chat(){
         .start()
         .then(() => {
           if(Init){
-            for(var c of ConversationList){
-              Hub.AddToGroup(connection,c.id)
+            for(var c in conversationList){
+              Hub.AddToGroup(connection,c)
             }
             setInit(false)
           }
@@ -72,15 +73,19 @@ function Chat(){
   }, [connection]);
 
   useEffect(()  => {  
-    if(ConversationList.length){
-      setChoose(ConversationList[0].id);
+
+    if(conversationList && Object.keys(conversationList).length && Object.getPrototypeOf(conversationList) === Object.prototype){
+      for(var c in conversationList){
+        setChoose(c);
+        break;
+      }
       if(Connect){
         const connect = Hub.EstablishConnection()
         setConnection(connect);
         setConnect(false); // set to false so that signalR does not establish again
       }
     }
-  }, [ConversationList]);
+  }, [conversationList]);
 
 
   
@@ -88,7 +93,7 @@ function Chat(){
   return (
       <Box className = {classes.root}>
         <Box padding={2} className = {classes.conversation_list}>
-          <TalkList list = {ConversationList} setChoose = {setChoose} isChoosing = {Choose} />
+          <TalkList list = {conversationList} setChoose = {setChoose} isChoosing = {Choose} />
           <CreateTalk />
         </Box>
         <ChatBoard connection={connection} conversation_id = {Choose} talks={Talks} />

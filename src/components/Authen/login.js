@@ -1,6 +1,6 @@
 import { Box} from "@mui/system";
 import React,{useState} from "react";
-import Authentication from '../../services/API/athentication.api'
+import Authentication from '../../services/API/authentication.api'
 import { makeStyles } from '@mui/styles';
 import LoginIcon from '@mui/icons-material/Login';
 import CreateIcon from '@mui/icons-material/Create';
@@ -10,6 +10,8 @@ import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import { AUTHEN_FORM_COLOR, AUTHEN_FORM_TEXT_COLOR, MESSAGE_TEXT_COLOR } from "../colors";
 import { Button, TextField, Typography } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
+import { useDispatch } from 'react-redux';
+import { Login } from '../../redux/action/auth';
 const useStyles = makeStyles({ 
   root : {
     position : 'absolute',
@@ -49,27 +51,18 @@ const useStyles = makeStyles({
   }
 })
 
-function Login(props) {
+function AuthenPage() {
 
-    const {loginState} = props;
     const classes = useStyles()
     const [Username, setUsername] = useState('');
     const [Password, setPassword] = useState('');
     const [Mode, setMode] = useState('login');
 
+    const dispatch = useDispatch();
 
-    const handleLogin = async () => {
+    const handleLogin = () => {
       const data = {'username': Username,'password': Password};
-      try {
-        await Authentication.login(data);
-        if(localStorage.getItem('Token') !== 'undefined' && localStorage.getItem('Token') !== null){
-          loginState(true);
-        }
-        //loginState(true);
-      }
-      catch (e) {
-        console.log(e);
-      }
+      dispatch(Login(data));
     }
 
   return (
@@ -105,4 +98,4 @@ function Login(props) {
   );
 }
 
-export default Login;
+export default AuthenPage;

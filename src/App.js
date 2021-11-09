@@ -1,22 +1,30 @@
 import { Box } from "@mui/system";
-import React, {useState,useEffect} from "react";
-import Login from "./components/Authen/login";
+import React, {useEffect} from "react";
+import AuthenPage from "./components/Authen/login";
 import Chat from "./components/Pages/chat";
 import LeftSideToolbar from "./components/side/leftside";
+import { useDispatch, useSelector } from 'react-redux';
+import { GetUserInfo } from "./redux/action/user";
+import {GetAllConversation} from './redux/action/conversation';
+
 function App() {
 
-  const [Token, setToken] = useState('');
-  const [IsLogin, setIsLogin] = useState(false);
+  const {isLoggedIn} = useSelector(state => state.user);
+  const {User} = useSelector(state => state.user);
 
+  console.log(User);
+  const {conversationList} = useSelector(state => state.conversation);
+  console.log(conversationList);
+  const dispatch = useDispatch ();
   useEffect(() => {
-    if(localStorage.getItem('Token') !== 'undefined' && localStorage.getItem('Token') !== null){
-      setIsLogin(true);
-    }
-  }, [IsLogin])
+      if(isLoggedIn){
+        dispatch(GetUserInfo());
+        
+      }
+  }, [isLoggedIn])
 
-
-  if (!IsLogin) {
-    return <Login  loginState = {setIsLogin} />
+  if (!isLoggedIn) {
+    return <AuthenPage  />
   }
   else {
     return (

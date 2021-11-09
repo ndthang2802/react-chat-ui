@@ -11,9 +11,9 @@ export default function TalkList(props) {
         padding= '.3rem 0 1rem 0'
         >
         {
-            list.length ? list.map((talk,index) => {
-                return (<React.Fragment>
-                    <TalkListItem key={index+talk.id} id={talk.id} name={talk.name} creator={talk.creator} users={talk.usersAttend}  ischoose={talk.id === isChoosing}  choose={()=>setChoose(talk.id)} />
+            list ? Object.keys(list).map((id) => {
+                return (<React.Fragment key={id}>
+                    <TalkListItem   id={id} name={list[id].name} creator={list[id].creator} users={list[id].usersAttend}  ischoose={id === isChoosing}  choose={()=>setChoose(id)} />
                 </React.Fragment>)
             })
             : null

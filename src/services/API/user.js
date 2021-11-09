@@ -1,8 +1,10 @@
-class Conversation {
-    async get() {
+import authenticationServices from "./authentication.api";
+
+class User {
+    async getUserInfo() {
         var token = localStorage.getItem('token');
-        var res = await fetch("https://localhost:5001/api/Chat/getCoversation",{
-            method : 'POST',
+        var res = await fetch("https://localhost:5001/api/User/userInfo",{
+            method : 'GET',
             credentials : 'include',
             headers : {
                 'Content-Type' : 'application/json',
@@ -20,11 +22,11 @@ class Conversation {
             }
         }
         else {
-            throw new Error("CONSERVATION_GET_ERROR");
+            throw new Error("GET_USER_INFO_FAIL");
         }
     }
 
 
 }
 
-export default new Conversation();
+export default new User();
