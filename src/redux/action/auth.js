@@ -26,3 +26,15 @@ export function Refresh(action){
         }
     }
 }
+
+export function Register(data){
+    return async function RegisterThunk(dispatch) {
+        try {
+            var response = await AuthenticationService.Register(data)
+            dispatch({type: 'REGISTER_SUCCESS',payload : response})
+        }
+        catch(e) {
+
+        }
+    }
+}

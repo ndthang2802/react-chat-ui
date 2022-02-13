@@ -1,5 +1,3 @@
-import authenticationServices from "./authentication.api";
-
 class User {
     async getUserInfo() {
         var token = localStorage.getItem('token');

@@ -1,62 +1,21 @@
 import { Box} from "@mui/system";
 import React,{useState} from "react";
-import Authentication from '../../services/API/authentication.api'
-import { makeStyles } from '@mui/styles';
 import LoginIcon from '@mui/icons-material/Login';
-import CreateIcon from '@mui/icons-material/Create';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 
-import { AUTHEN_FORM_COLOR, AUTHEN_FORM_TEXT_COLOR, MESSAGE_TEXT_COLOR } from "../colors";
+import { MESSAGE_TEXT_COLOR } from "../colors";
 import { Button, TextField, Typography } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useDispatch } from 'react-redux';
 import { Login } from '../../redux/action/auth';
-const useStyles = makeStyles({ 
-  root : {
-    position : 'absolute',
-    width : '50%',
-    height : 'auto',
-    minHeight : '35%',
-    top : '45%',
-    left : '45%',
-    transform : 'translate(-45%, -45%)',
-    display : "grid",
-    gridTemplateRows : "1fr 5fr 1fr",
-    padding : '1rem',
-    backgroundColor : AUTHEN_FORM_COLOR,
-    borderRadius : '10px',
-    color : AUTHEN_FORM_TEXT_COLOR,
-  },
-  header : {
-    display: "flex",
-    flexDirection : 'row',
-    gap : '1rem',
-  },
-  main : {
-    display: 'flex',
-    flexDirection : 'column',
-    justifyContent : 'center',
-    gap : '1rem',
-    
-  },
-  footer: {
-    display:"flex",
-    justifyContent : 'flex-end',
-  },
-  icon : {
-    fill: '#ecedee!important',
-    height: '3.2rem!important',
-    width: '3.2rem!important',
-  }
-})
+import { useStyles } from "./style";
 
-function AuthenPage() {
+function LoginPane() {
 
-    const classes = useStyles()
+    const classes = useStyles();
     const [Username, setUsername] = useState('');
     const [Password, setPassword] = useState('');
-    const [Mode, setMode] = useState('login');
 
     const dispatch = useDispatch();
 
@@ -66,10 +25,10 @@ function AuthenPage() {
     }
 
   return (
-    <Box className={classes.root}>
+    <>
       <Box className={classes.header}>
-        <Box>{Mode === 'login' ? <LoginIcon className={classes.icon} /> : <CreateIcon  className={classes.icon} />}</Box>
-        <Box>{Mode === 'login' ? <Typography variant='h4'>Login</Typography> : <Typography variant='h6'>Register</Typography>}</Box>
+        <Box><LoginIcon className={classes.icon} /></Box>
+        <Box><Typography variant='h4'>Login</Typography></Box>
       </Box>
       <Box className={classes.main} pl={3} mt={2}>
         <Box>
@@ -90,12 +49,12 @@ function AuthenPage() {
         </Box>
       </Box>
         <Box className={classes.footer} px={5}>
-        <Button variant="contained" endIcon={<SendOutlinedIcon />} onClick={handleLogin}>
-          Send
-        </Button>
+          <Button variant="contained" endIcon={<SendOutlinedIcon />} onClick={handleLogin}>
+            Send
+          </Button>
         </Box>
-    </Box>
+    </>
   );
 }
 
-export default AuthenPage;
+export default LoginPane;

@@ -1,8 +1,8 @@
 const initialState = {
     isLoggedIn : localStorage.getItem('token') ? true : localStorage.getItem('RefreshToken') ? true : false,
     User : {
-        token: localStorage.getItem('token') | "",
-        refreshToken: localStorage.getItem('RefreshToken') | "",
+        token: localStorage.getItem('token') ?  localStorage.getItem('token') : "",
+        refreshToken: localStorage.getItem('RefreshToken') ? localStorage.getItem('RefreshToken') : "",
         info : {
             id: "",
             username: "",

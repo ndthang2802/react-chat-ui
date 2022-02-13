@@ -1,6 +1,6 @@
 import { Box } from "@mui/system";
-import React, {useEffect} from "react";
-import AuthenPage from "./components/Authen/login";
+import React, {useEffect, useMemo} from "react";
+import AuthenPage from "./components/Authen/index";
 import Chat from "./components/Pages/chat";
 import LeftSideToolbar from "./components/side/leftside";
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,17 +10,12 @@ import {GetAllConversation} from './redux/action/conversation';
 function App() {
 
   const {isLoggedIn} = useSelector(state => state.user);
-  const {User} = useSelector(state => state.user);
 
-  console.log(User);
-  const {conversationList} = useSelector(state => state.conversation);
-  console.log(conversationList);
-  const dispatch = useDispatch ();
+  const dispatch = useDispatch();
   useEffect(() => {
       if(isLoggedIn){
-        dispatch(GetUserInfo());
-        dispatch(GetAllConversation());
-        
+        Promise.resolve(dispatch(GetUserInfo())).then(
+          () => dispatch(GetAllConversation()));
       }
   }, [isLoggedIn])
 
@@ -30,13 +25,13 @@ function App() {
   else {
     return (
       <Box sx={{ display: 'grid', gridTemplateRows: '1fr 10fr 1fr',height:'100vh', gap: 1}}>
-        <Box></Box> {/* add some component  */}
+        <Box></Box> 
         <Box sx={{ display: 'grid', gap : 1.5  ,gridTemplateColumns: '0.6fr 13fr 1fr' }}>
           <LeftSideToolbar />
           <Chat />
-          <Box></Box> {/* add some component  */}
+          <Box></Box> 
         </Box>
-      <Box></Box> {/* add some component  */}
+      <Box></Box> 
     
     </Box>
     )

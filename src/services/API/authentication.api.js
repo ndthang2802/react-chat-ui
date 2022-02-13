@@ -45,6 +45,25 @@ class Authentication {
     }
 
 
+    async Register(data) {
+        var res = await fetch("https://localhost:5001/api/User/register",{
+            method : 'POST',
+            credentials : 'include',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify(data)
+        })
+        if (res.status === 200) {
+            res = await res.json();
+            return res;
+        }
+        else {
+            throw new Error("ERROR_REGISTER_FAIL");
+        }
+    }
+
+
 
 }
 

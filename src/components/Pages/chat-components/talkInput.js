@@ -1,10 +1,9 @@
-import { FormControl, Input, InputAdornment, InputLabel, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
-import KeyboardAltOutlinedIcon from '@mui/icons-material/KeyboardAltOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import React,{useState} from 'react'
 import { Box } from '@mui/system';
-import { DEFAULT_ICON_COLOR, MESSAGE_TEXT_COLOR } from '../../colors';
+import { MESSAGE_TEXT_COLOR } from '../../colors';
 import { AccountCircle } from '@mui/icons-material';
 
 import Hub from '../../../services/SignalR/signalrHub';
@@ -13,9 +12,9 @@ export default function TalkInput(props) {
     const {connection,conversation_id} = props;
     const [Message, setMessage] = useState('');
 
-    const SendMessage = ()=> {
+    const SendMessage = async ()=> {
         if(Message)
-            Hub.SendMessage(connection,Message,conversation_id);
+            await Hub.SendMessage(connection,Message,conversation_id);
         setMessage('');
     }
 

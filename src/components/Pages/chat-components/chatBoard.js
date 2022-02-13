@@ -1,10 +1,9 @@
 import { Box } from '@mui/system';
-import React, {useEffect} from 'react';
+import React from 'react';
 import { makeStyles } from '@mui/styles';
 import TalkInput from './talkInput';
 import MessageList from './messageList';
 import { CHAT_PANE, CHAT_PANE_MAIN, MESSAGE_TEXT_COLOR } from '../../colors';
-import Hub from '../../../services/SignalR/signalrHub';
 const useStyles = makeStyles({
   chat_pane_background : {
     backgroundColor : CHAT_PANE_MAIN
